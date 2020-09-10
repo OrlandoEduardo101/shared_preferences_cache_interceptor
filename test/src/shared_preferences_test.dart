@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hasura_cache_interceptor/src/services/shared_preferences_storage_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences_cache_interceptor/src/shared_preferences_storage_service.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {
   Map data = {};
