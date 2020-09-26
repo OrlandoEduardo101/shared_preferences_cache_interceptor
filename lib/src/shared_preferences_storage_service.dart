@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:hasura_cache_interceptor/hasura_cache_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class SharedPreferencesStorageService implements IStorageService {
   final _instance = Completer<SharedPreferences>();
@@ -34,13 +35,15 @@ class SharedPreferencesStorageService implements IStorageService {
   @override
   Future<dynamic> get(String key) async {
     final instance = await _instance.future;
-    return instance.get(key);
+    return a == null ? null : json.decode(a);
   }
 
   @override
   Future<void> put(String key, dynamic value) async {
     final instance = await _instance.future;
-    await instance.setString(key, value?.toString());
+    if (value != null) {
+      await instance.setString(key, json.encode(value));
+    }
   }
 
   @override
