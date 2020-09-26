@@ -35,7 +35,8 @@ class SharedPreferencesStorageService implements IStorageService {
   @override
   Future<dynamic> get(String key) async {
     final instance = await _instance.future;
-    return a == null ? null : json.decode(a);
+    final data = instance.getString(key);
+    return data == null ? null : json.decode(data);
   }
 
   @override
