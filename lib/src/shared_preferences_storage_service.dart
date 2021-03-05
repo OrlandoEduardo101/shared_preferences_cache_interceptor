@@ -7,13 +7,11 @@ import 'dart:convert';
 class SharedPreferencesStorageService implements IStorageService {
   final _instance = Completer<SharedPreferences>();
 
-  factory SharedPreferencesStorageService() =>
-      SharedPreferencesStorageService._();
+  factory SharedPreferencesStorageService() => SharedPreferencesStorageService._();
 
-  factory SharedPreferencesStorageService.test(SharedPreferences instance) =>
-      SharedPreferencesStorageService._(instance);
+  factory SharedPreferencesStorageService.test(SharedPreferences instance) => SharedPreferencesStorageService._(instance);
 
-  SharedPreferencesStorageService._([SharedPreferences instance]) {
+  SharedPreferencesStorageService._([SharedPreferences? instance]) {
     if (instance == null) {
       _initInstance();
     } else {

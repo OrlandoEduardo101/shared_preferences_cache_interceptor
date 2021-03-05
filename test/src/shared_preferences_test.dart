@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_cache_interceptor/src/shared_preferences_storage_service.dart';
 
@@ -8,6 +8,9 @@ class MockSharedPreferences extends Mock implements SharedPreferences {
 
   @override
   get(String key) => data[key];
+
+  @override
+  String getString(String key) => data[key];
 
   @override
   Future<bool> remove(String key) async {
@@ -32,8 +35,8 @@ class MockSharedPreferences extends Mock implements SharedPreferences {
 }
 
 void main() {
-  MockSharedPreferences service;
-  SharedPreferencesStorageService storage;
+  late MockSharedPreferences service;
+  late SharedPreferencesStorageService storage;
 
   setUp(() {
     service = MockSharedPreferences();
@@ -41,14 +44,14 @@ void main() {
   });
 
   test("get", () async {
-    service.data["mock_key"] = 'mock_value';
+    service.data["mock_key"] = '{"mock":"value"}';
     final response = await storage.get("mock_key");
-    expect(response, 'mock_value');
+    expect(response, {"mock": "value"});
   });
 
   test("put", () async {
-    await storage.put("mock_key", "mock_value");
-    expect(service.data["mock_key"], 'mock_value');
+    await storage.put("mock_key", {"mock": "value"});
+    expect(service.data["mock_key"], '{"mock":"value"}');
   });
 
   test("remove", () async {
@@ -59,7 +62,9 @@ void main() {
 
   group("containsKey", () {
     test("true", () async {
-      service.data["mock_key"] = {'value': 'mock_value'};
+      service.data["mock_key"] = {
+        'value': 'mock_value'
+      };
       final response = await storage.containsKey("mock_key");
       expect(response, true);
     });
@@ -70,7 +75,9 @@ void main() {
   });
 
   test("clear", () async {
-    service.data["mock_key"] = {'value': 'mock_value'};
+    service.data["mock_key"] = {
+      'value': 'mock_value'
+    };
     await storage.clear();
     expect(service.data, {});
   });
